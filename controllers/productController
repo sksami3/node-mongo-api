@@ -1,0 +1,89 @@
+var ProductService = require("../services/productService");
+
+exports.findAll = async (req, res) => {
+  try {
+    const products = await ProductService.FindAll(req);
+    if (products) {
+      res.status(201).send(products);
+    } else {
+      res.status(400).send({ message: "Products not found!!!" });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+};
+
+exports.find = async (req, res) => {
+  try {
+    const product = await ProductService.Find(req.params.id);
+    if (product) {
+      res.status(201).send(product);
+    } else {
+      res.status(400).send({ message: "Product not found!!!" });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+};
+
+exports.create = async (req, res) => {
+  try {
+    const productData = await ProductService.Create(req);
+    res.status(201).send(productData);
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+};
+
+exports.bulk_create = async (req, res) => {
+  try {
+    const productData = await ProductService.Bulk_Create(req);
+    res.status(201).send(productData);
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+};
+
+exports.update = async (req, res) => {
+  try {
+    const productData = await ProductService.Update(req);
+    res.status(201).status(201).send({
+      success: true,
+      message: "Product updated",
+      object: productData,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+};
+
+exports.delete = async (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  try {
+    const product = await ProductService.Delete(id);
+    if (product) {
+      res.status(201).send({
+        success: true,
+        message: "Product deleted",
+        object: product,
+      });
+    } else {
+      res.status(400).send({ message: "product not found" });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+    });
+  }
+};
